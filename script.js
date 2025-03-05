@@ -87,7 +87,7 @@ let year = selectedDate.getFullYear();
 let month = String(selectedDate.getMonth() + 1).padStart(2, "0"); // Ensure 2 digits
 let day = String(selectedDate.getDate()).padStart(2, "0"); // Ensure 2 digits
 
-let formattedDate = ${year}-${month}-${day};
+let formattedDate = `${year}-${month}-${day}`;
 
 function getDate() {
   // ["2025-04-21",] arrayOfDueDates
