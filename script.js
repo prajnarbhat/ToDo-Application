@@ -13,7 +13,6 @@ const searchResultEmptyStateElement = document.getElementById('search-result-emp
 const formDialog = document.getElementById("formDialog");
 
 function handleZeroState() {
-
   const zeroStateElement = document.getElementById('zero-state-container');
   const taskItems = JSON.parse(localStorage.getItem("taskItems"));
    
@@ -28,6 +27,7 @@ handleZeroState();
 
 function addNewTask() {
   submitForm.style.display = 'block';
+  resetForm();
   formDialog.showModal();
 }
 
@@ -76,6 +76,11 @@ let editIndex = -1;
 
 // Edit the existing task
 function editTodo(index) {
+  const formheader = document.getElementById('formheader');
+  formheader.innerHTML = "Edit task"
+
+  submitForm.style.display = 'block';
+  formDialog.showModal();
 
   taskName.value = taskArray[index].name;
   taskDescription.value = taskArray[index].description;
@@ -83,9 +88,7 @@ function editTodo(index) {
 
   editIndex = index;
 
-  submitForm.style.display = 'block';
-
-  localStorage.setItem("taskItems", JSON.stringify(taskArray)); // Update localStorage
+  localStorage.setItem("taskItems", JSON.stringify(taskArray));
   renderTask();
 }
 
@@ -150,7 +153,6 @@ function highlightOverdueDate() {
 }
 
 function renderTask() {
-
     // clear demo ul element
   demo.innerHTML = " ";
     // loop through taskArray creating to each task
@@ -159,7 +161,7 @@ function renderTask() {
 
     tasklist.innerHTML = `
                     <div id="contentOfList">
-                      <strong>${task.name}</strong> <br></br>
+                      <div class="task-header"><strong>${task.name}</strong></div> <br></br>
                     Description: ${task.description} 
                     <br></br>
                     Due Date: ${task.dueDate}
@@ -167,8 +169,8 @@ function renderTask() {
                     <hr width="100%" size="2">
 
                     <div class = "block">
-                    <button class="btn" style="background-color: #04AA6D;" onclick="editTodo(${index})"> <i class="fa fa-edit"></i> Edit </button>
-                    <button class="btn" style="background-color: red;" onclick="deleteTodo(${index})"> <i class="fa fa-trash"></i> Delete </button>
+                    <button class="btn" style="background-color: #377fcc;;" onclick="editTodo(${index})"> <i class="fa fa-edit"></i> Edit </button>
+                    <button class="btn" style="background-color: grey;" onclick="deleteTodo(${index})"> <i class="fa fa-trash"></i> Delete </button>
                     <i class="fa fa-check-circle" style="font-size:30px;color:#04AA6D;" onclick="changeColor(${index})"></i>
                     </div>`;
 
