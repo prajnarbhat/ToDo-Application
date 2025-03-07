@@ -24,9 +24,9 @@ function closeForm() {
 
 // Clears input fields 
 function resetForm() {
-  taskName.value = "";
-  taskDescription.value = "";
-  taskDueDate.value = "";
+  taskName.value = " ";
+  taskDescription.value = " ";
+  taskDueDate.value = " ";
 }
 
 // Disabling the past dates by setting an attribute as minimum date as today
@@ -42,13 +42,19 @@ function disablePastDates() {
 
 // Delete the task
 function deleteTodo(index) {
-  taskArray.splice(index, 1);
-  // chanage the localstorage data after deleting the task
-  localStorage.setItem("taskItems", JSON.stringify(taskArray)); 
-  // render the task in the ui
+
+  let confirmDelete = confirm("Are you sure you want to delete this task?");
+
+  if (confirmDelete) {
+    taskArray.splice(index, 1);
+    // change the localstorage data after deleting the task
+  }
+    localStorage.setItem("taskItems", JSON.stringify(taskArray)); 
+    // render the task in the ui
+
   renderTask();
 }
-
+  
 //initialise the index to -1
 let editIndex = -1;
 
@@ -71,9 +77,11 @@ function searchFilterFunction(event) {
   const searchResultEmptyStateElement = document.getElementById('search-result-empty');
   var matchFound = false;
   let searchText = event.target.value.toLowerCase();
+
   if (!searchText) {
     searchResultEmptyStateElement.style.display = 'none';
   }
+
   let taskElementList = document.querySelector("ul");
   // li will have all the li elements inside the ul
   taskElements = taskElementList.getElementsByTagName("li");
@@ -87,20 +95,9 @@ function searchFilterFunction(event) {
       taskElements[i].style.display = "none";
     }
   }
+
   if (!matchFound) {
     searchResultEmptyStateElement.style.display = "block";
-  }
-}
-
-
-// Change the colour of the task if clicked on the compelted toggle box
-
-function changeColor(index) {
-  let taskElements = document.querySelectorAll("#demo li");
-  if (taskElements[index].style.backgroundColor === "white") {
-    taskElements[index].style.backgroundColor = "lightgreen";
-  } else {
-    taskElements[index].style.backgroundColor = "white";
   }
 }
 
@@ -113,7 +110,7 @@ let day = String(selectedDate.getDate()).padStart(2, "0"); // Ensure 2 digits
 
 let formattedDate = `${year}-${month}-${day}`;
 
-function getDate() {
+function highlightOverdueDate() {
   // ["2025-04-21",] arrayOfDueDates
   const arrayOfDueDates = taskArray.map((item) => {
     return item.dueDate;
@@ -126,6 +123,7 @@ function getDate() {
     if (date > dueDateObject) {
       // apply style to particular li element of ul
       let taskElements = document.querySelectorAll("#demo li");
+
       if (taskElements[index]) {
         taskElements[index].style.backgroundColor = "lightyellow";
       }
@@ -137,7 +135,7 @@ function renderTask() {
 
     // clear demo ul element
   demo.innerHTML = " ";
-    // loop throgh taskArray creating to each task
+    // loop through taskArray creating to each task
   taskArray.forEach((task, index) => {
     const tasklist = document.createElement("li");
 
@@ -161,7 +159,7 @@ function renderTask() {
     tasklist.classList.add("task-items");
 
   });
-  getDate();
+  highlightOverdueDate();
 }
 
 submitForm.addEventListener("submit", (e) => {
@@ -171,9 +169,6 @@ submitForm.addEventListener("submit", (e) => {
   const taskDescription = document.getElementById("description").value;
   const taskDueDate = document.getElementById("dueDate").value;
   
-  if (!taskName && !taskDescription && !taskDueDate){
-    alert("Please fill in this field.")
-  }
   const taskItems = {
     name: taskName,
     description: taskDescription,
@@ -193,9 +188,8 @@ submitForm.addEventListener("submit", (e) => {
 
   localStorage.setItem("taskItems", JSON.stringify(taskArray));
 
-
   closeForm();
-
+  
   renderTask();
 });
 renderTask();

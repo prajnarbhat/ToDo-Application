@@ -191,54 +191,55 @@
         font-size: 16px;
         cursor: pointer;
         padding: 5px 10px;
-      }  
+      }
       
   </style>
 </head>
 
 <body>
+
   <h1> Todo App </h1>
     <div class="input-task">
       <input type="text" placeholder="Search for a task" class="input-focus" id="inputtext" onkeyup="searchFilterFunction(event)"/>
       <button class="open-button" onclick="addNewTask()">Add task</button>
     </div>
+
     <div class="container">
-    <div id="zero-state-container" style="display: none;">
-      <p>No tasks yet! Add a new task</p>
-    </div>
-    <div id="search-result-empty" style="display: none;">
-      <p>You have no tasks for the search query</p>
-    </div>
-
-    <div id="taskbox">
-      <ul id="demo" class="task-list">
-
-      </ul>
-    </div>
-  </div>
-  <div class="form-container">
-    <dialog id="formDialog">
-    <form class="form-popup" id="submitForm"  method="dialog">
-      <div class="form-header">
-        <p><b>Add new task</b></p>
-        <div class="close-modal" onclick="closeForm()"><span>×</span></div>
+      <div id="zero-state-container" style="display: none;">
+        <p>No tasks yet! Add a new task</p>
+      </div>
+      <div id="search-result-empty" style="display: none;">
+        <p>You have no tasks for the search query</p>
       </div>
 
-      <div class="form-input">
-        <input type="text" placeholder="Task name" id="task" name="name" required> <br>
-        <input type="text" placeholder="Task description" id="description" required> <br>
-        <input type="date" id="dueDate" onfocus="disablePastDates()" required><br>
-      </div>
+      <div id="taskbox">
+        <ul id="demo" class="task-list">
 
-      <div class="popup-buttons">
-        <button type="submit" class="addtask-btn">Add task</button>
-        <button type="button" class="canceltask-btn" onclick="closeForm()">Cancel</button>
+        </ul>
       </div>
-    </form>
-  </dialog>
-  </div>
+    </div>
+    <div class="form-container">
+      <dialog id="formDialog">
+      <form class="form-popup" id="submitForm"  method="dialog">
+        <div class="form-header">
+          <p><b>Add new task</b></p>
+          <div class="close-modal" onclick="closeForm()"><span>×</span></div>
+        </div>
+
+        <div class="form-input">
+          <input type="text" placeholder="Task name" id="task" name="name" required> <br>
+          <input type="text" placeholder="Task description" id="description" required> <br>
+          <input type="date" id="dueDate" onfocus="disablePastDates()" required><br>
+        </div>
+
+        <div class="popup-buttons">
+          <button type="submit" class="addtask-btn">Add task</button>
+          <button type="button" class="canceltask-btn" onclick="closeForm()">Cancel</button>
+        </div>
+      </form>
+      </dialog>
+    </div>
+
   <script src="script.js"> </script>
-
 </body>
-
 </html>
