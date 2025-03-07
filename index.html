@@ -6,6 +6,7 @@
   <style>
     * {
       box-sizing: border-box;
+      border-radius: 8px;
     }
 
     body {
@@ -15,19 +16,28 @@
       background-color: beige;
     }
 
-    .inputTask{
-      padding:20px;
-      display:flex;
-      gap:10px;
-      justify-content: space-around;
+    .input-task {
+      padding: 20px;
+      color: white;
+      text-align: center;
+      display: flex;
+      justify-content: center;
+      gap: 20px;
     }
-    .inputTask input{
-      width:100vh;
-      height:40px;
+
+    .input-task input {
+      border: 1px solid #ccc;
+      box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+      width: 50vh;
+      padding: 10px;
+      cursor: pointer;
     }
-    .inputTask .open-button{
-      background-color: #04AA6D; /* Green */
-      border: none;
+
+    .input-task .open-button {
+      background-color:  #377fcc;
+      border: 1px solid #ccc;
+      box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2); 
+    
       color: white;
       text-align: center;
       text-decoration: none;
@@ -36,152 +46,189 @@
       cursor: pointer;
     }
 
-    /* The popup form - modern look */
-    .form-popup {
-        display: none;
-        position: fixed;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        border: 2px solid #ccc;
-        z-index: 9;
-        max-width: 350px;
-        padding: 20px;
-        background-color: white;
-        border-radius: 10px;
-        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
-        border-radius: 8px;
-      }
-    
-    
-      /* Input fields */
-      #submitForm input[type="text"],
-      #submitForm input[type="date"] {
-        width: 100%;
-        padding: 12px;
-        margin: 8px 0;
-        border: 1px solid #ccc;
-        border-radius: 6px;
-        background: #f9f9f9;
-        transition: 0.3s ease-in-out;
-      }
-    
-      #submitForm input[type="text"]:focus,
-      #submitForm input[type="date"]:focus {
-        background-color: #eef;
-        border: 1px solid #007bff;
-        outline: none;
-      }
- 
-      #submitForm #submitBtn {
-        color: white;
-        padding: 12px;
-        border: none;
-        cursor: pointer;
-        width: 100%;
-        margin-top: 10px;
-        border-radius: 6px;
-        font-size: 16px;
-        transition: background 0.3s ease-in-out;
-      }
-      #submitForm #submitBtn 
-        :nth-child(1) {
-        background-color: lightgreen;
-      }
-      #submitForm #submitBtn :nth-child(2){
-        background-color: #be8b90;    
-      }
-      .addTaskBtn {
-        background-color: #a2b1c2;
-      }
-      .addTaskBtn:hover {
-        background-color: #a5b9cf;
-      }
-      /* Cancel button - Red */
-      .cancelBtn {
-        background-color: #b69d9f;
-      }
-      
-      .cancelBtn:hover {
-        background-color: #b69699;
-      }
+    .task-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      justify-content: space-between;
+    }
 
-    
+    .container {    
+      background-color: white;
+      padding: 30px;
+      margin: auto;
+      width: 150vh;
+    }
 
-      #demo {
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
-        justify-content: space-between;
-      }
-
-      .container {
-        
-        background-color: white;
-        padding: 30px;
-        margin:auto;
-        width:150vh;
-     }
-
-    #taskList {
-      border: 1px solid black;
+    .task-items {
+      border: 1px solid #ccc;
+      box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
       height: 100%;
-      padding: 15px 0 5 8;
-      align-items: center;
-      border-radius: 10px;
+      padding: 15px 0 8px 0;
+    }
+    
+    .task-items::marker {
+      content: none;
     }
 
     .block {
-      border: 1px solid #ddd;
       width: 100%;
       display: flex;
       justify-content: flex-end;
       align-items: center;
       gap: 10px;
-      padding: 5px;
+      padding: 5px 6px 2px 2px;
     }
 
-    .btn {
-      background-color: DodgerBlue;
-      border: none;
-      color: white;
-      height: 30px;
-      font-size: 16px;
-      cursor: pointer;
-      padding: 5px 10px;
+    .form-popup {
+        display: none;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        width: 60vh;
+        transform: translate(-50%, -50%);
+        border: 1px solid #ccc;
+        z-index: 9;
+        padding: 10px;
+        background-color: white;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
     }
+    .form-header {
+      display: flex;
+      justify-content: space-between;
+    }
+
+    p {
+      font-size: 20px;
+      margin-left: 20px;
+    }
+
+    .close-modal {
+      font-size: 30px;
+      padding: 25px;
+      align-items: center;
+      padding: 15px 20px 0;
+    
+    }
+
+    .close-modal span:hover {
+      background-color: #eef;
+    }
+
+    .form-input{
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+
+    form-input input {
+      cursor: pointer;
+    }
+    
+    .form-popup input[type="text"],
+      .form-popup input[type="date"] {
+        width: 50vh;
+        padding: 12px;
+        margin: 8px 0;
+        border: 1px solid #ccc;
+        background: #f9f9f9;
+        transition: 0.3s ease-in-out;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+      } 
+    
+      .form-popup input[type="text"]:focus,
+      .form-popup input[type="date"]:focus {
+        background-color: #eef;
+        border: 1px solid #007bff;
+        outline: none;
+      }
+
+      .input-focus:focus {
+        background-color: #eef;
+        border: 1px solid #007bff;
+        outline: none;
+      }
+
+      .popup-buttons{
+        display: flex;
+        justify-content: flex-end;
+        gap: 10px;
+        margin-right: 20px;
+        margin-top: 5px;
+        margin-bottom: 15px;
+      }
+ 
+      .addtask-btn,.canceltask-btn  {
+        color: white;
+        width: 90px;
+        border: none;
+        cursor: pointer;
+        font-size: 16px;
+        transition: background 0.3sease-in-out;
+        padding: 6px;
+        text-align: center;
+        height: 40px;
+      }
+
+      .addtask-btn {
+        background-color: #377fcc;
+      }
+
+      .canceltask-btn {
+        background-color: grey;
+      }
+    
+      .btn {
+        background-color: DodgerBlue;
+        border: none;
+        color: white;
+        height: 30px;
+        font-size: 16px;
+        cursor: pointer;
+        padding: 5px 10px;
+      }  
+      
   </style>
 </head>
 
 <body>
-  <h1> ToDo Form </h1>
-  <div class="container">
-    <div class="inputTask">
-      <input type="text" placeholder="search" id="myInput" onkeyup="searchFilterFunction(event)"/>
-      <button class="open-button" onclick="addNewTask()">Add Task</button>
+  <h1> Todo App </h1>
+    <div class="input-task">
+      <input type="text" placeholder="Search for a task" class="input-focus" id="inputtext" onkeyup="searchFilterFunction(event)"/>
+      <button class="open-button" onclick="addNewTask()">Add task</button>
+    </div>
+    <div class="container">
+    <div id="zero-state-container" style="display: none;">
+      <p>No tasks yet! Add a new task</p>
+    </div>
+    <div id="search-result-empty" style="display: none;">
+      <p>You have no tasks for the search query</p>
     </div>
 
     <div id="taskbox">
-      <ul id="demo">
+      <ul id="demo" class="task-list">
 
       </ul>
     </div>
   </div>
-  <div  id="form-container">
-    <form  class="form-popup" id="submitForm">
-      <h1>Add New Task</h1>
+  <div class="form-container">
+    <form class="form-popup" id="submitForm">
+      <div class="form-header">
+        <p><b>Add new task</b></p>
+        <div class="close-modal" onclick="closeForm()"><span>×</span></div>
+      </div>
 
-      <label for="TaskName"><b>Task Name</b></label>
-      <input type="text" placeholder="Enter Task" id="task" required>
+      <div class="form-input">
+        <input type="text" placeholder="Task name" id="task" name="name" required> <br>
+        <input type="text" placeholder="Task description" id="description" required> <br>
+        <input type="date" id="dueDate" onfocus="disablePastDates()" required><br>
+      </div>
 
-      <label for="psw"><b>Task Description</b></label>
-      <input type="text" placeholder="Enter Description" id="description" required>
-
-      <label for="dueDate"><b>Due Date</b></label>
-      <input type="date" id="dueDate" required>
-
-      <button type="submit" id="submitBtn" class="addTaskBtn" onclick="closeForm()">Add Task</button>
-      <button type="button" id="submitBtn" class="cancelBtn" onclick="closeForm()">Cancel</button>
+      <div class="popup-buttons">
+        <button type="submit" class="addtask-btn">Add task</button>
+        <button type="button" class="canceltask-btn" onclick="closeForm()">Cancel</button>
+      </div>
     </form>
   </div>
   <script src="script.js"> </script>
