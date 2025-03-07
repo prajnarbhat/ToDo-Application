@@ -12,6 +12,20 @@ const zeroStateElement = document.getElementById('zero-state-container');
 const searchResultEmptyStateElement = document.getElementById('search-result-empty');
 const formDialog = document.getElementById("formDialog");
 
+function handleZeroState() {
+
+  const zeroStateElement = document.getElementById('zero-state-container');
+  const taskItems = JSON.parse(localStorage.getItem("taskItems"));
+   
+  if (taskItems == null || taskArray.length == 0 ) {
+    document.getElementById('zero-state-container').style.display = "";
+  } else {
+    document.getElementById('zero-state-container').style.display = "none";
+  }
+}
+
+handleZeroState();
+
 function addNewTask() {
   submitForm.style.display = 'block';
   formDialog.showModal();
@@ -51,8 +65,10 @@ function deleteTodo(index) {
   }
     localStorage.setItem("taskItems", JSON.stringify(taskArray)); 
     // render the task in the ui
+    handleSearchZeroState();
 
   renderTask();
+  
 }
   
 //initialise the index to -1
@@ -122,7 +138,9 @@ function highlightOverdueDate() {
     
     if (date > dueDateObject) {
       // apply style to particular li element of ul
-      let taskElements = document.querySelectorAll("#demo li");
+      let taskElementList = document.querySelector("ul");
+  // li will have all the li elements inside the ul
+  taskElements = taskElementList.getElementsByTagName("li");
 
       if (taskElements[index]) {
         taskElements[index].style.backgroundColor = "lightyellow";
@@ -191,21 +209,10 @@ submitForm.addEventListener("submit", (e) => {
   closeForm();
   
   renderTask();
+  handleZeroState();
+
 });
 renderTask();
 
-function handleSearchZeroState() {
-  const inputText = document.getElementById('inputtext').value;
-  const searchResultEmptyStateElement = document.getElementById('search-result-empty');
-  // if there are any elements satisfying search - show filtered list
-  let isSearchHasResults = taskArray.some((task) => {
-    return task.name.indexOf(inputtext) > -1;
-  });
 
-  if (!!isSearchHasResults && localStorage.getItem("taskItems") !== null) {
-    document.getElementById('zero-state-container').style.display = "none";
-  } else {
-    document.getElementById('zero-state-container').style.display = " ";
-  }
-}
 
