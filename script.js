@@ -10,13 +10,16 @@ const taskDueDate = document.getElementById("dueDate");
 let popup = document.getElementById('popup');
 const zeroStateElement = document.getElementById('zero-state-container');
 const searchResultEmptyStateElement = document.getElementById('search-result-empty');
+const formDialog = document.getElementById("formDialog");
 
 function addNewTask() {
   submitForm.style.display = 'block';
+  formDialog.showModal();
 }
 
 function closeForm() {
   submitForm.style.display = 'none';
+  formDialog.close();
 }
 
 // Clears input fields 
@@ -163,6 +166,7 @@ function renderTask() {
 
 submitForm.addEventListener("submit", (e) => {
   e.preventDefault();
+
   const taskName = document.getElementById("task").value;
   const taskDescription = document.getElementById("description").value;
   const taskDueDate = document.getElementById("dueDate").value;
@@ -188,6 +192,7 @@ submitForm.addEventListener("submit", (e) => {
   const json = JSON.stringify(taskArray);
 
   localStorage.setItem("taskItems", JSON.stringify(taskArray));
+
 
   closeForm();
 

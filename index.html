@@ -125,6 +125,10 @@
     form-input input {
       cursor: pointer;
     }
+
+    dialog::backdrop {
+      background-color: rgba(0, 0, 0, 0.5);
+    }
     
     .form-popup input[type="text"],
       .form-popup input[type="date"] {
@@ -213,7 +217,8 @@
     </div>
   </div>
   <div class="form-container">
-    <form class="form-popup" id="submitForm">
+    <dialog id="formDialog">
+    <form class="form-popup" id="submitForm"  method="dialog">
       <div class="form-header">
         <p><b>Add new task</b></p>
         <div class="close-modal" onclick="closeForm()"><span>×</span></div>
@@ -230,6 +235,7 @@
         <button type="button" class="canceltask-btn" onclick="closeForm()">Cancel</button>
       </div>
     </form>
+  </dialog>
   </div>
   <script src="script.js"> </script>
 
