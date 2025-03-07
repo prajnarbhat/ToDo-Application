@@ -65,7 +65,7 @@ function deleteTodo(index) {
   }
     localStorage.setItem("taskItems", JSON.stringify(taskArray)); 
     // render the task in the ui
-    handleSearchZeroState();
+    handleZeroState()
 
   renderTask();
   
