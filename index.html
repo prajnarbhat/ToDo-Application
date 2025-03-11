@@ -1,249 +1,338 @@
-<html>
-
+<!DOCTYPE html>
+<html lang="en">
 <head>
-  <title>Todo list Application</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-  <style>
-    * {
-      box-sizing: border-box;
-      border-radius: 8px;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Todo List Application</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <style>
 
-    body {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      background-color: beige;
-    }
+        :root {
+        --font-family: "Inter var", sans-serif;
+        --font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+        --text-color: #4b5563;
+        --primary-color: #3B82F6;
+        }
 
-    .input-task {
-      padding: 20px;
-      color: white;
-      text-align: center;
-      display: flex;
-      justify-content: center;
-      gap: 20px;
-    }
+        * {
+          box-sizing: border-box;
+          border-radius: 8px;
+          font-family: var(--font-family);
+          font-feature-settings: var(--font-feature-settings);            
+        }
+        
+       .body-container {
+            align-items: center;
+            background-color: white;
+        }
 
-    .input-task input {
-      border: 1px solid #ccc;
-      box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
-      width: 50vh;
-      padding: 10px;
-      cursor: pointer;
-    }
+        .input-task {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          padding: 30px;
+        }
 
-    .input-task .open-button {
-      background-color:  #377fcc;
-      border: 1px solid #ccc;
-      box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2); 
-    
-      color: white;
-      text-align: center;
-      text-decoration: none;
-      display: inline-block;
-      font-size: 16px;
-      cursor: pointer;
-    }
+        .input-item {
+          margin : 10px;
+          font-family: var(--font-family);
+          font-feature-settings: var(--font-feature-settings, normal);
+          font-size: 1rem;
+          padding: .75rem;
+          border: 1px solid #d1d5db;
+          transition: background-color .2s, color .2s, border-color .2s, box-shadow .2s;
+        }
 
-    .task-list {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      justify-content: space-between;
-    }
+        .input-task  input {
+          text-color: var(--text-color);
+          background: #fff;
+          box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);  
+        }
 
-    .container {    
-      background-color: white;
-      padding: 30px;
-      margin: auto;
-      width: 150vh;
-    }
+        .btn {
+          border: none;
+          color: white;
+          height: 40px;
+          font-size: 16px;
+          cursor: pointer;
+          padding: 10px;
+          width: auto;
+          display: inline-flex;
+          cursor: pointer;
+          align-items: center;
+          text-align: center;
+          overflow: hidden;
+          position: relative;
+          font-family: var(--font-family);
+          font-feature-settings: var(--font-feature-settings);
+          box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+        }
 
-    .task-items {
-      border: 1px solid #ccc;
-      box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
-      height: 100%;
-      padding: 15px 0 8px 0;
-    }
-    
-    .task-items::marker {
-      content: none;
-    }
+        .form-popup {
+          display: none;
+          position: fixed;
+          top: 50%;
+          left: 50%;
+          width: 60vh;
+          transform: translate(-50%, -50%);
+          border: 1px solid #ccc;
+          z-index: 9;
+          padding: 10px;
+          background-color: white;
+          box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+        }
 
-    .block {
-      width: 100%;
-      display: flex;
-      justify-content: flex-end;
-      align-items: center;
-      gap: 10px;
-      padding: 5px 6px 2px 2px;
-    }
-
-    .form-popup {
-        display: none;
-        position: fixed;
-        top: 50%;
-        left: 50%;
-        width: 60vh;
-        transform: translate(-50%, -50%);
-        border: 1px solid #ccc;
-        z-index: 9;
-        padding: 10px;
-        background-color: white;
-        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
-    }
-    .form-header {
-      display: flex;
-      justify-content: space-between;
-    }
-
-    p {
-      font-size: 20px;
-      margin-left: 20px;
-    }
-
-    .close-modal {
-      font-size: 30px;
-      padding: 25px;
-      align-items: center;
-      padding: 15px 20px 0;
-    
-    }
-
-    .close-modal span:hover {
-      background-color: #eef;
-    }
-
-    .form-input{
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-    }
-
-    form-input input {
-      cursor: pointer;
-    }
-
-    dialog::backdrop {
-      background-color: rgba(0, 0, 0, 0.5);
-    }
-    
-    .form-popup input[type="text"],
-      .form-popup input[type="date"] {
-        width: 50vh;
-        padding: 12px;
-        margin: 8px 0;
-        border: 1px solid #ccc;
-        background: #f9f9f9;
-        transition: 0.3s ease-in-out;
-        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
-      } 
-    
-      .form-popup input[type="text"]:focus,
-      .form-popup input[type="date"]:focus {
-        background-color: #eef;
-        border: 1px solid #007bff;
-        outline: none;
-      }
-
-      .input-focus:focus {
-        background-color: #eef;
-        border: 1px solid #007bff;
-        outline: none;
-      }
-
-      .popup-buttons{
+        .form-header {
         display: flex;
-        justify-content: flex-end;
-        gap: 10px;
-        margin-right: 20px;
-        margin-top: 5px;
-        margin-bottom: 15px;
-      }
+        justify-content: space-between;
+        }
+
+        .form-header h3 {
+        margin-left: 30px;
+        font-family: var(--font-family);
+        }
+  
+        .close-modal {
+          position: absolute; 
+          top: 20px;
+          right: 20px;
+          width: 32px;
+          height: 32px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 16px;
+          text-color: var(--text-color);
+          border: none;
+          border-radius: 50%;
+          cursor: pointer;
+          background: transparent;
+        }
     
-      .btn {
-        border: none;
-        color: white;
-        height: 35px;
-        font-size: 16px;
-        cursor: pointer;
-        padding: 5px 10px;
-      }
+        .close-modal:hover {
+          background-color: #eef;
+          border: 1px solid #007bff;
+          outline: none;
+        }
 
-      .zero-state {
-        text-align: center;
-        background-color: beige;
-        padding: 20px;
-        margin: 15px;
-        border: 1px solid #ccc;
-        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
-      }
-
-      .task-body {
-        display: flex;
-        flex-direction: column;
-        align-items: stretch;
-        justify-content: center;
-        padding: 0 24px;
-      }
-
-      .task-header {
-        color: #242222;
-        font-weight: 700;
-        border-radius: 8px;
-        font-size: 1.2rem;
-        align-items: start;
-      }
+        .form-input {
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+        }
+  
+        form-input input {
+          cursor: pointer;
+        }
+  
+        dialog::backdrop {
+          background-color: rgba(0, 0, 0, 0.5);
+        }
       
-  </style>
+        .form-popup input[type="text"],
+        .form-popup input[type="date"] ,
+        .form-popup select
+          {
+            width: 50vh;
+            padding: 12px;
+            margin: 8px 0;
+            border: 1px solid #ccc;
+            background: #f9f9f9;
+            transition: 0.3s ease-in-out;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+            font-feature-settings: var(--font-feature-settings);
+            font-family: var(--font-family);
+            text-color: var(--text-color);
+          } 
+      
+        .form-popup input[type="text"]:focus,
+        .form-popup input[type="date"]:focus,
+        .form-popup select:focus {
+          background-color: #eef;
+          border: 1px solid #007bff;
+          outline: none;
+        }
+  
+        .input-focus:focus {
+          background-color: #eef;
+          border: 1px solid #007bff;
+          outline: none;
+        }
+ 
+        .popup-buttons {
+          display: flex;
+          justify-content: flex-end;
+          gap: 10px;
+          margin-right: 20px;
+          margin-top: 5px;
+          margin-bottom: 15px;
+        }
+
+        .zero-state {
+          text-align: center;
+          font-family: var(--font-family);
+          font-feature-settings: var(--font-feature-settings);
+          background-color: beige;
+          padding: 20px;
+          margin: 15px;
+          border: 1px solid #ccc;
+          box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+          text-color: var(--text-color);
+        }
+
+        .task-body {
+          display: flex;
+          flex-direction: column;
+          gap: 20px;
+        }
+
+        .task-headings {
+          display: flex;
+          justify-content: space-around;
+          font-size: 1.5rem;
+          font-weight: bold;
+          text-align: center;
+          font-family: var(--font-family);
+          font-feature-settings: var(--font-feature-settings);
+          text-color: var(--text-color);
+        }
+
+        .task-columns {
+            display: flex;
+            justify-content: space-around;
+            gap: 40px;
+            background-color: white;   
+        }
+
+        .task-column {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            animation: .5s ease-out forwards
+        }
+
+        .task-heading.open { color: #f9a3a7;  }
+        .task-heading.inprogress { color: #9aa9ed; }
+        .task-heading.completed { color: #124c2a; }
+
+        .task-list::marker {
+          content: none;
+        }
+
+        .task-lists {
+          padding: 15px;
+          margin: 0;
+        }
+
+        .task-lists li {
+          padding: 15px;
+          border-radius: 5px;
+          font-size: 1rem;
+          box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+          transition: 0.3s ease-in-out;
+          margin-bottom: 15px;
+          display: flex;
+          flex-direction: column;
+          gap: 5px;
+          cursor: pointer;
+        }
+
+        .task-list:hover {
+          transform: scale(0.95);
+          box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
+        }
+      
+        .block {
+          display: flex;
+          justify-content: flex-end;
+          gap: 5px;
+        }
+
+        .open-tasks li {
+          border: 1px solid #e09599;
+          background-color: #fce9ea;
+        }
+
+        .inprogress-tasks li {
+          border: 1px solid #95a3eb;
+          background-color: #eef1fe;
+        }
+
+        .completed-tasks li {
+          border: 1px solid #80dca9;
+          background-color: #e9f6ed;
+        }
+    </style>
 </head>
-
 <body>
-
-  <h1> Todo App </h1>
+  <div class="body-container">
     <div class="input-task">
-      <input type="text" placeholder="Search for a task" class="input-focus" id="inputtext" onkeyup="searchFilterFunction(event)"/>
-      <button class="btn" style="background-color: #377fcc;" onclick="addNewTask()">Add task</button>
+      <input type="text" class="input-item input-focus" placeholder="Search for a task" id="inputtext" onkeyup="searchFilterFunction(event)"/>
+      <button class="btn" class="input-item btn input-focus" style="background-color: #377fcc;" onclick="addNewTask()"><i class="fa fa-plus"></i>&nbsp; Add Task</button>
     </div>
 
-    <div class="container">
-      <div id="zero-state-container" class="zero-state" style="display: none;">
+    <div class="zero-container">
+      <div id="zero-state-container" class="zero-state input-focus" style="display: none;">
         <p>No tasks yet! Add a new task</p>
       </div>
-      <div id="search-result-empty" class="zero-state" style="display: none;">
+      <div id="search-result-empty" class="zero-state input-focus" style="display: none;">
         <p>You have no tasks for the search query</p>
       </div>
+    </div>
 
-      <div class="task-body">
-        <ul id="demo" class="task-list">
-
-        </ul>
+    <div class="task-body">
+      <div class="task-headings">
+          <div class="task-heading open">OPEN TASKS</div>
+          <div class="task-heading inprogress">IN-PROGRESS TASKS</div>
+          <div class="task-heading completed">COMPLETED TASKS</div>
       </div>
+
+      <div class="task-columns">
+          <div class="task-column">
+              <ul id="open-tasks" class="task-lists  open-tasks"></ul>
+          </div>
+          <div class="task-column">
+              <ul id="inprogress-tasks" class="task-lists inprogress-tasks"></ul>
+          </div>
+          <div class="task-column">
+              <ul id="completed-tasks" class="task-lists completed-tasks"></ul>
+          </div>
+      </div>
+
     </div>
-    <div class="form-container">
-      <dialog id="formDialog">
-      <form class="form-popup" id="submitForm"  method="dialog">
-        <div class="form-header">
-          <p id="formheader"><b>Add new task</b></p>
-          <div class="close-modal" onclick="closeForm()"><span>×</span></div>
-        </div>
+  </div>
 
-        <div class="form-input">
-          <input type="text" placeholder="Task name" id="task" name="name" required> <br>
-          <input type="text" placeholder="Task description" id="description" required> <br>
-          <input type="date" id="dueDate" placeholder="Task due date" onfocus="disablePastDates()" required><br>
-        </div>
+    <dialog id="formDialog">
+        <form class="form-popup" id="submitForm" method="dialog">
+            <div class="form-header">
+                <h3 id="formheader"><b>Add new task</b></h3>
+                <button type="button" class="close-modal" onclick="closeForm()"><i class="fa fa-times"></i></button>
+              
+            </div>
 
-        <div class="popup-buttons">
-          <button type="submit" class="btn" style="background-color: #377fcc;">Add task</button>
-          <button type="button" class="btn" style="background-color: grey;" onclick="closeForm()">Cancel</button>
-        </div>
-      </form>
-      </dialog>
-    </div>
+            <div class="form-input">
+                <input type="text" class="input-focus" placeholder="Task Name" id="task" name="name" required>
+                <input type="text" class="input-focus" placeholder="Task Description" id="description" required>
+                <input type="text" class="input-focus" id="dueDate" placeholder="Due date" onfocus="disablePastDates() (this.type='date')"  onblur="(this.type='text')" required>
+      
+                <select id="statusdropdown" class="select-option" class="input-focus">
+                    <option value="Open">Open</option>
+                    <option value="In Progress">In Progress</option>
+                    <option value="Completed">Completed</option>
+                </select>
+            </div>
 
-  <script src="script.js"> </script>
+            <div class="popup-buttons">
+                <button type="submit" class="btn" style="background-color: #377fcc;"><i class="fa fa-check"></i></i>&nbsp; Save</button>
+                <button type="button" class="btn" style="background-color: grey;" onclick="closeForm()"><i class="fa fa-times"></i></i>&nbsp; Cancel</button>
+            </div>
+            
+        </form>
+    </dialog>
+  </div>
+
+    <script src="script.js"></script>
 </body>
 </html>

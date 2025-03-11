@@ -2,14 +2,16 @@
 // It will take the data from localstorage 
 taskArray = JSON.parse(localStorage.getItem("taskItems")) || [];
 let submitForm = document.getElementById("submitForm");
-let demo = document.querySelector("ul");
+let openTasksContainer = document.getElementById("open-tasks");
+let inProgressTasksContainer = document.getElementById("inprogress-tasks");
+let completedTasksContainer = document.getElementById("completed-tasks");
 let myForm = document.getElementById("myForm");
 const taskName = document.getElementById("task");
 const taskDescription = document.getElementById("description");
 const taskDueDate = document.getElementById("dueDate");
-let popup = document.getElementById('popup');
-const zeroStateElement = document.getElementById('zero-state-container');
-const searchResultEmptyStateElement = document.getElementById('search-result-empty');
+const statusDropdown = document.getElementById("statusdropdown");
+const zeroStateElement = document.getElementById("zero-state-container");
+const searchResultEmptyStateElement = document.getElementById("search-result-empty");
 const formDialog = document.getElementById("formDialog");
 
 function handleZeroState() {
@@ -26,6 +28,7 @@ function handleZeroState() {
 handleZeroState();
 
 function addNewTask() {
+  document.getElementById("formheader").innerText = "Add new task";
   submitForm.style.display = 'block';
   resetForm();
   formDialog.showModal();
@@ -36,12 +39,62 @@ function closeForm() {
   formDialog.close();
 }
 
-// Clears input fields 
 function resetForm() {
-  taskName.value = " ";
-  taskDescription.value = " ";
-  taskDueDate.value = " ";
+  taskName.value = "";
+  taskDescription.value = "";
+  taskDueDate.value = "";
+  statusDropdown.value = "Open";
 }
+
+function deleteTodo(index) {
+  if (confirm("Are you sure you want to delete this task?")) {
+    taskArray.splice(index, 1);
+    localStorage.setItem("taskItems", JSON.stringify(taskArray));
+    handleZeroState();
+    renderTask();
+  }
+}
+
+let editIndex = -1;
+
+function editTodo(index) {
+  document.getElementById('formheader').innerText = "Edit task";
+  submitForm.style.display = 'block';
+  formDialog.showModal();
+  
+  taskName.value = taskArray[index].name;
+  taskDescription.value = taskArray[index].description;
+  taskDueDate.value = taskArray[index].dueDate;
+  statusDropdown.value = taskArray[index].status;
+  
+  editIndex = index;
+}
+
+function searchFilterFunction(event) {
+  const searchResultEmptyStateElement = document.getElementById('search-result-empty');
+  let matchFound = false;
+  let searchText = event.target.value.toLowerCase();
+
+  if (!searchText) {
+    searchResultEmptyStateElement.style.display = 'none';
+  }
+
+  let taskElements = document.querySelectorAll("#open-tasks li, #inprogress-tasks li, #completed-tasks li");
+  taskElements.forEach((taskElement) => {
+    let textValue = taskElement.querySelector('.task-header').textContent.toLowerCase();
+    if (textValue.includes(searchText)) {
+      taskElement.style.display = "block";
+      matchFound = true;
+    } else {
+      taskElement.style.display = "none";
+    }
+  });
+
+  if (!matchFound) {
+    searchResultEmptyStateElement.style.display = "block";
+  }
+}
+
 
 // Disabling the past dates by setting an attribute as minimum date as today
 function disablePastDates() {
@@ -54,167 +107,65 @@ function disablePastDates() {
   document.getElementById("dueDate").setAttribute("min", today);
 }
 
-// Delete the task
-function deleteTodo(index) {
-
-  let confirmDelete = confirm("Are you sure you want to delete this task?");
-
-  if (confirmDelete) {
-    taskArray.splice(index, 1);
-    // change the localstorage data after deleting the task
-  }
-    localStorage.setItem("taskItems", JSON.stringify(taskArray)); 
-    // render the task in the ui
-    handleZeroState()
-
-  renderTask();
-  
-}
-  
-//initialise the index to -1
-let editIndex = -1;
-
-// Edit the existing task
-function editTodo(index) {
-  const formheader = document.getElementById('formheader');
-  formheader.innerHTML = "Edit task"
-
-  submitForm.style.display = 'block';
-  formDialog.showModal();
-
-  taskName.value = taskArray[index].name;
-  taskDescription.value = taskArray[index].description;
-  taskDueDate.value = taskArray[index].dueDate;
-
-  editIndex = index;
-
-  localStorage.setItem("taskItems", JSON.stringify(taskArray));
-  renderTask();
-}
-
-function searchFilterFunction(event) {
-  const searchResultEmptyStateElement = document.getElementById('search-result-empty');
-  var matchFound = false;
-  let searchText = event.target.value.toLowerCase();
-
-  if (!searchText) {
-    searchResultEmptyStateElement.style.display = 'none';
-  }
-
-  let taskElementList = document.querySelector("ul");
-  // li will have all the li elements inside the ul
-  taskElements = taskElementList.getElementsByTagName("li");
-
-  for (let i = 0; i < taskArray.length; i++) {
-    textValue = taskArray[i].name;
-    if (textValue.toLowerCase().indexOf(searchText) > -1) {
-      taskElements[i].style.display = "block";
-      matchFound = true;
-    } else {
-      taskElements[i].style.display = "none";
-    }
-  }
-
-  if (!matchFound) {
-    searchResultEmptyStateElement.style.display = "block";
-  }
-}
-
-const date = new Date();
-
-let selectedDate = new Date();
-let year = selectedDate.getFullYear();
-let month = String(selectedDate.getMonth() + 1).padStart(2, "0"); // Ensure 2 digits
-let day = String(selectedDate.getDate()).padStart(2, "0"); // Ensure 2 digits
-
-let formattedDate = `${year}-${month}-${day}`;
-
-function highlightOverdueDate() {
-  // ["2025-04-21",] arrayOfDueDates
-  const arrayOfDueDates = taskArray.map((item) => {
-    return item.dueDate;
-  });
-  arrayOfDueDates.forEach((duedate, index) => {
-    // here duedate is a string stored in an array convert to object to compare that with date object
-
-    let dueDateObject = new Date(duedate);
-    
-    if (date > dueDateObject) {
-      // apply style to particular li element of ul
-      let taskElementList = document.querySelector("ul");
-  // li will have all the li elements inside the ul
-  taskElements = taskElementList.getElementsByTagName("li");
-
-      if (taskElements[index]) {
-        taskElements[index].style.backgroundColor = "lightyellow";
-      }
-    }
-  });
-}
 
 function renderTask() {
-    // clear demo ul element
-  demo.innerHTML = " ";
-    // loop through taskArray creating to each task
+  openTasksContainer.innerHTML = "";
+  inProgressTasksContainer.innerHTML = "";
+  completedTasksContainer.innerHTML = "";
+  
   taskArray.forEach((task, index) => {
     const tasklist = document.createElement("li");
-
     tasklist.innerHTML = `
-                    <div id="contentOfList">
-                      <div class="task-header"><strong>${task.name}</strong></div> <br></br>
-                    Description: ${task.description} 
-                    <br></br>
-                    Due Date: ${task.dueDate}
-                    </div>
-                    <hr width="100%" size="2">
+      <div class="contentOfList">
+        <div class="task-header"><strong>${task.name}</strong></div>
+        <p>Description: ${task.description}</p>
+        <p>Due Date: ${task.dueDate}</p>
+      </div>
+     
+      <div class="block">
+        <button class="btn" style="background-color: #377fcc;" onclick="editTodo(${index})"> <i class="fa fa-edit"></i>&nbsp; Edit </button>
+        <button class="btn" style="background-color: grey;" onclick="deleteTodo(${index})"> <i class="fa fa-trash"></i>&nbsp; Delete </button>
+      </div>`;
+    
+    if (task.status === "Open") {
+      openTasksContainer.appendChild(tasklist);
+    } else if (task.status === "In Progress") {
+      inProgressTasksContainer.appendChild(tasklist);
+    } else if (task.status === "Completed") {
+      completedTasksContainer.appendChild(tasklist);
+    }
 
-                    <div class = "block">
-                    <button class="btn" style="background-color: #377fcc;;" onclick="editTodo(${index})"> <i class="fa fa-edit"></i> Edit </button>
-                    <button class="btn" style="background-color: grey;" onclick="deleteTodo(${index})"> <i class="fa fa-trash"></i> Delete </button>
-                    <i class="fa fa-check-circle" style="font-size:30px;color:#04AA6D;" onclick="changeColor(${index})"></i>
-                    </div>`;
-
-    demo.appendChild(tasklist);
-
-    tasklist.classList.add("task-items");
-
+    tasklist.classList.add("task-list");
   });
-  highlightOverdueDate();
+  
+  
 }
 
 submitForm.addEventListener("submit", (e) => {
   e.preventDefault();
-
-  const taskName = document.getElementById("task").value;
-  const taskDescription = document.getElementById("description").value;
-  const taskDueDate = document.getElementById("dueDate").value;
-  
   const taskItems = {
-    name: taskName,
-    description: taskDescription,
-    dueDate: taskDueDate,
+    name: taskName.value,
+    description: taskDescription.value,
+    dueDate: taskDueDate.value,
+    status: statusDropdown.value
   };
 
-  if (editIndex == -1) {
+  console.log(taskItems);
+  
+  if (editIndex === -1) {
     taskArray.push(taskItems);
-  }
-  else{
+  } else {
     taskArray[editIndex] = taskItems;
     editIndex = -1;
   }
-  resetForm();
 
-  const json = JSON.stringify(taskArray);
-
-  localStorage.setItem("taskItems", JSON.stringify(taskArray));
-
-  closeForm();
+  console.log(taskArray)
   
+  resetForm();
+  localStorage.setItem("taskItems", JSON.stringify(taskArray));
+  closeForm();
   renderTask();
   handleZeroState();
-
 });
+
 renderTask();
-
-
-
