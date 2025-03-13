@@ -74,12 +74,23 @@ function searchFilterFunction(event) {
   const searchResultEmptyStateElement = document.getElementById('search-result-empty');
   let matchFound = false;
   let searchText = event.target.value.toLowerCase();
+  let taskElements = document.querySelectorAll("#open-tasks li, #inprogress-tasks li, #completed-tasks li");
 
-  if (!searchText) {
-    searchResultEmptyStateElement.style.display = 'none';
+  if (searchText.length == 0) {
+    taskElements.forEach((taskElement) => {
+      taskElement.style.display = "block"
+    });
+    
+    if (taskElements.length > 0) {
+      searchResultEmptyStateElement.style.display = 'none';
+    }
+    else {
+      searchResultEmptyStateElement.style.display = 'block';
+    }
+    return;
   }
 
-  let taskElements = document.querySelectorAll("#open-tasks li, #inprogress-tasks li, #completed-tasks li");
+  
   taskElements.forEach((taskElement) => {
     let textValue = taskElement.querySelector('.task-header').textContent.toLowerCase();
     if (textValue.includes(searchText)) {
@@ -90,9 +101,7 @@ function searchFilterFunction(event) {
     }
   });
 
-  if (!matchFound) {
-    searchResultEmptyStateElement.style.display = "block";
-  }
+  searchResultEmptyStateElement.style.display = matchFound ? "none" : "block";
 }
 
 
