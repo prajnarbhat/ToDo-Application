@@ -3,7 +3,7 @@
 This is an enhanced to-do list application built with html,css,javascript, allowing users to manage tasks
 
 # Demo
-Check out the live app here: https://taskflowmanagment.netlify.app/
+Check out the live app here: [TaskFlow Management](https://taskflowmanagment.netlify.app/)
 
 
 # Installation
