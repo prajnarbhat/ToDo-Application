@@ -276,6 +276,21 @@
           border: 1px solid #80dca9;
           background-color: #e9f6ed;
         }
+
+        @keyframes fadeIn {
+          from {
+              opacity: 0;
+              transform: translateY(10px);
+          }
+          to {
+              opacity: 1;
+              transform: translateY(0);
+          }
+        }
+
+        .task-lists li {
+          animation: fadeIn 0.5s ease-in-out;
+        }
     </style>
 </head>
 <body>
