@@ -81,7 +81,7 @@ function searchFilterFunction(event) {
       taskElement.style.display = "block"
     });
     
-    if (taskElements.length > 0) {
+    if (taskElements.length >= 0) {
       searchResultEmptyStateElement.style.display = 'none';
     }
     else {
