@@ -10,3 +10,10 @@ Add new tasks with a  due date, and status (Open, In Progress, Completed).
 Edit or delete tasks.
 Tasks are categorized by their status (Open, In Progress, Completed).
 Filter tasks by search, and status.
+
+# Technologies
+
+1. Vanilla JavaScript
+2. Netlify for deployment
+
+   
