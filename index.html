@@ -292,27 +292,6 @@
           animation: fadeIn 0.5s ease-in-out;
         }
 
-        .all-tasks {
-          display: flex;
-          flex-direction: column;
-        }
-
-        .all-tasks li {
-          margin: 4px;
-        }
-
-        .all-tasks li:nth-child(1) {
-          color: #f9a3a7; 
-        }
-      
-        .all-tasks li:nth-child(2) {
-          color: #9aa9ed; 
-        }
-      
-        .all-tasks li:nth-child(3) {
-          color: #80dca9; 
-        }
-
         @media (max-width: 768px) { 
           .task-lists li {
             width: 100%;
@@ -338,14 +317,6 @@
       <div id="search-result-empty" class="zero-state input-focus" style="display: none;">
         <p>You have no tasks for the search query</p>
       </div>
-    </div>
-
-    <div>
-      <ul class="all-tasks">
-        <li> Open tasks</li>
-        <li> In-Progress tasks </li>
-        <li> Completed tasks </li>
-      </ul>
     </div>
 
     <div class="task-body">
