@@ -73,7 +73,7 @@ function editTodo(index) {
 function searchFilterFunction(event) {
   const searchResultEmptyStateElement = document.getElementById('search-result-empty');
   let matchFound = false;
-  let searchText = event.target.value.toLowerCase();
+  let searchText = event.target.value.toLowerCase().trim();
   let taskElements = document.querySelectorAll("#open-tasks li, #inprogress-tasks li, #completed-tasks li");
 
   if (searchText.length == 0) {
